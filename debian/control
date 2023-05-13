@@ -1,0 +1,17 @@
+Source: rapiddisk-on-boot
+Section: misc
+Priority: optional
+Maintainer: Matteo Tenca <matteo.tenca@gmail.com>
+Build-Depends: debhelper
+Homepage: https://github.com/matteotenca/rapiddisk-on-boot/
+Vcs-Browser: https://github.com/matteotenca/rapiddisk-on-boot/
+Vcs-Git: https://github.com/matteotenca/rapiddisk-on-boot.git
+Standards-Version: 4.4.1
+
+Package: rapiddisk-on-boot
+Architecture: all
+Depends: rapiddisk, rapiddisk-dkms
+Description: RapidDisk Boot Install Script
+ Allows to install a RapidDisk cache on the boot
+ volume manipulating the initramfs-tools configuration.
+
