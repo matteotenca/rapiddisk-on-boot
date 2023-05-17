@@ -1,4 +1,3 @@
 rapiddisk-on-boot usr/sbin
-ubuntu etc/rapiddisk-on-boot
-rapiddisk-on-boot_kernel_prerm etc/kernel/prerm.d/
+
 

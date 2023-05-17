@@ -1,4 +1,4 @@
-rapiddisk-on-boot (2.0.0) UNRELEASED; urgency=medium
+rapiddisk-on-boot (20.0.1-1) UNRELEASED; urgency=medium
 
   * New upstream release.
   * Changed Build-Depends to adapt to the new dependency relations between 'dkms' and 'dh_dkms'

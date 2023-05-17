@@ -1,42 +1,46 @@
 #!/bin/sh
+
+trim() {
+    echo "$1" | sed 's/^[ \t]*//;s/[ \t]*$//'
+}
+
 PREREQ=""
-prereqs()
-{
-        echo "$PREREQ"
+prereqs() {
+    echo "$PREREQ"
 }
 
 case $1 in
-        prereqs)
-                prereqs
-                exit 0
-                ;;
+    prereqs)
+        prereqs
+        exit 0
+        ;;
 esac
 
 . /scripts/functions
 
 # Begin real processing below this line
-if [ ! -x /sbin/rapiddisk ] ; then
-	exit 0
+if [ ! -x /sbin/rapiddisk ]; then
+    exit 0
 fi
 cache="$(rapiddisk -l)"
-ramdisks="$(echo $cache | grep -oE 'RapidDisk Device +[[:digit:]]+: +[^ ]+'|grep -oE '[^ ]+$')"
-mapped="$(echo $cache | grep -oE 'Cache: +[^ ]+'| grep -oE '[^ ]+$')"
-for map in $mapped ; do
-	for rd in $ramdisks ; do
-		if [ $map = $rd ]; then
-			tokeep="$tokeep $rd"
-		fi
-	done
+ram_disks="$(echo "$cache" | grep -oE 'RapidDisk Device +[[:digit:]]+:[[:space:]]+[a-zA-Z0-9]+' | grep -oE '[^ \t]+$')"
+mapped="$(echo "$cache" | grep -oE 'Cache:[[:space:]]+[^ \t]+' | grep -oE '[^ ]+$')"
+for map in $mapped; do
+    for rd in $ram_disks; do
+        if [ "$map" = "$rd" ]; then
+            to_keep="$to_keep $rd"
+        fi
+    done
 done
-for rmv in $tokeep ; do
-	ramdisks="$(echo $ramdisks | sed "s/\b$rmv\b//g")"
+to_keep="$(trim "$to_keep")"
+for rmv in $to_keep; do
+    ram_disks="$(echo "$ram_disks" | sed "s/\b$rmv\b//g")"
 done
-
-for remove in $ramdisks ; do
-	if rapiddisk 2>&1 -d $remove ; then
-		log_warning_msg "rapiddisk: deleted $remove ramdisk"
-	else
-		log_warning_msg "rapiddisk: failed to delete $remove ramdisk"
-	fi
+for remove in $ram_disks; do
+    if rapiddisk 2>&1 -d "$remove"; then
+        log_warning_msg "rapiddisk: deleted $remove ramdisk"
+    else
+        log_warning_msg "rapiddisk: failed to delete $remove ramdisk"
+    fi
 done
 exit 0

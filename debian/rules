@@ -16,17 +16,17 @@
 #DPKG_EXPORT_BUILDFLAGS = 1
 include /usr/share/dpkg/default.mk
 
-DEB_BUILD_OPTIONS += noautodbgsym
+#DEB_BUILD_OPTIONS += noautodbgsym
 
-override_dh_auto_clean:
+#override_dh_auto_clean:
 
-override_dh_auto_build:
+#override_dh_auto_build:
 
-override_dh_clean:
-
-override_dh_auto_install:
+#override_dh_auto_install:
 
 override_dh_install:
+	install -g root -o root -m 755 -D $(CURDIR)/debian/rapiddisk-on-boot_kernel_prerm $(CURDIR)/debian/rapiddisk-on-boot/etc/kernel/prerm.d/rapiddisk-on-boot
+	install -g root -o root -m 644 -D -t $(CURDIR)/debian/rapiddisk-on-boot/etc/rapiddisk-on-boot/ubuntu $(CURDIR)/ubuntu/*
 	dh_install
 
 %:
